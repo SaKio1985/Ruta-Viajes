@@ -1,0 +1,15 @@
+body {
+  --pakistan-green: #143601ff;
+  --pakistan-green-2: #1a4301ff;
+  --dark-moss-green: #245501ff;
+  --avocado: #538d22ff;
+  --asparagus: #73a942ff;
+  --pistachio: #aad576ff;
+  background-color: var(--pakistan-green);
+}
+.audiowide-regular {
+  font-family: 'Audiowide', sans-serif;
+  font-size: 55px;
+  font-weight: 400;
+  font-style: normal;
+}
