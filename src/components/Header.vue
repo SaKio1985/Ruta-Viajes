@@ -12,7 +12,7 @@ const goToHome = () => {
     <button class="logo-button" @click="goToHome">FLIXBUS</button>
   </header>
 </template>
-<style>
+<style scoped>
 .app-header {
   background-color: #5bcf00; /* Verde FlixBus */
   color: white;
@@ -23,6 +23,7 @@ const goToHome = () => {
   font-family: 'Audiowide', sans-serif;
   font-size: 35px;
   font-weight: 400;
+  height: 10vh;
 }
 .logo-button {
   background: none;
