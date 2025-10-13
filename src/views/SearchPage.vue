@@ -151,7 +151,8 @@ const getPrice = (city) => {
   background-color: var(--pistachio);
   font-family: 'Audiowide', sans-serif;
   font-size: 13px;
-  height: 80vh;
+  min-height: 80vh;
+  padding-bottom: 40px;
 }
 .cities-container {
   display: flex;
@@ -180,7 +181,18 @@ button:hover {
   width: 100%;
   max-width: 600px;
   margin-top: 20px;
-  padding: 20px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+@media (min-width: 1024px) {
+  .city-details {
+    max-width: 1200px;
+    flex-direction: row;
+    align-items: flex-start;
+  }
 }
 
 .city-info {
@@ -234,5 +246,44 @@ button:hover {
 
 .details-text strong {
   color: var(--dark-moss-green);
+}
+
+.city-details :deep(.leaflet-container) {
+  margin-top: 30px;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 2px solid var(--dark-moss-green);
+}
+
+@media (min-width: 1024px) {
+  .city-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .city-details > div:last-child {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .city-details :deep(.leaflet-container) {
+    margin-top: 0;
+  }
+}
+@media (max-width: 500px) {
+  .city-info {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    justify-content: center;
+    align-items: center;
+  }
+  .details-text {
+    text-align: center;
+  }
+  .city-details {
+    margin: 10px;
+    width: 90%;
+  }
 }
 </style>

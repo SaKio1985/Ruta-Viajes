@@ -37,11 +37,7 @@ export default {
   font-size: 14px;
   color: #333;
   margin-top: auto;
-  position: fixed;
-  left: 0;
-  bottom: 0;
   width: 100%;
-  height: 10vh;
 }
 
 .footer-content {

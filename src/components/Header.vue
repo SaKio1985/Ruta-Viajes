@@ -16,14 +16,14 @@ const goToHome = () => {
 .app-header {
   background-color: #5bcf00; /* Verde FlixBus */
   color: white;
-  padding: 15px 20px;
+  padding: 5px 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   font-family: 'Audiowide', sans-serif;
   font-size: 35px;
   font-weight: 400;
-  height: 10vh;
+  height: 7vh;
 }
 .logo-button {
   background: none;

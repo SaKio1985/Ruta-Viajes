@@ -22,6 +22,16 @@ onMounted(() => {
 </template>
 
 <style scoped>
+.app-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.main-content {
+  flex: 1;
+}
+
 .app-header {
   background-color: #5bcf00; /* Verde FlixBus */
   color: white;
