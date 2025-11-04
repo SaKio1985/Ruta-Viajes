@@ -1,6 +1,6 @@
 <script>
 // ✅ Importamos la imagen desde src/assets
-import bannerImage from '@/assets/flixbus-urban.jpg'
+import bannerImage from '@/assets/GoCity.jpg'
 import { useRouter } from 'vue-router'
 
 export default {
@@ -41,13 +41,11 @@ export default {
 
         <!-- Texto descriptivo -->
         <p>
-          FlixBus es una compañía alemana fundada en 2013 que ofrece servicios de transporte
-          interurbano en autobús de bajo costo, operando en Europa, Norteamérica, Brasil y Chile,
-          con una red de más de 2.500 destinos en 40+ países. Su modelo de negocio se basa en
-          colaboraciones con empresas locales de autobuses (sin poseer flota propia), enfatizando
-          viajes asequibles, cómodos, sostenibles y tecnológicamente avanzados mediante una app y
-          reservas en línea, con un enfoque en precios dinámicos y comodidades como WiFi y
-          seguimiento en tiempo real.
+          GoCity es tu guía inteligente para explorar más de 40 destinos en Europa y América,
+          combinando transporte público, atracciones turísticas y datos prácticos en una sola
+          plataforma. Diseñada para viajeros curiosos, ofrece mapas interactivos, fotos reales de
+          cada ciudad, precios actualizados y opciones de movilidad sostenible (autobuses, trenes y
+          transporte local), todo organizado para que planifiques tu viaje ideal sin estrés.
         </p>
 
         <!-- ✅ BOTÓN "BUSCAR CIUDAD" (reemplaza "Buscar rutas") -->

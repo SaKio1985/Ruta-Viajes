@@ -1,5 +1,5 @@
 <script setup>
-import FlixBusFooter from './components/FlixBusFooter.vue'
+import GoCityFooter from './components/GoCityFooter.vue'
 import Header from './components/Header.vue'
 import { useCityStore } from './stores/cities'
 import { onMounted } from 'vue'
@@ -17,7 +17,7 @@ onMounted(() => {
       <router-view />
       <!-- ← Aquí se renderiza la página actual (HomePage.vue, SearchPage.vue, etc.) -->
     </main>
-    <FlixBusFooter />
+    <GoCityFooter />
   </div>
 </template>
 

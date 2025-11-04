@@ -9,7 +9,7 @@ const goToHome = () => {
 </script>
 <template>
   <header class="app-header">
-    <button class="logo-button" @click="goToHome">FLIXBUS</button>
+    <button class="logo-button" @click="goToHome">GoCity</button>
   </header>
 </template>
 <style scoped>

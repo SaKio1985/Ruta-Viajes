@@ -2,29 +2,18 @@
   <footer class="minimal-footer">
     <div class="footer-content">
       <div class="links">
-        <a href="#">Acceso para distribuidor</a>
-        <a href="#">Política de privacidad</a>
-        <a href="#">Derechos pasajeros</a>
-        <a href="#">Aviso legal</a>
-        <a href="#">Accesibilidad</a>
-        <a href="#" class="cookie-link">
-          <img
-            src="https://cdn-cf.cms.flixbus.com/drupal-assets/cookie-consent/cookie-icon.svg"
-            alt="Cookie"
-            width="16"
-            height="16"
-          />
-          Cambiar la configuración de las cookies
-        </a>
+        <router-link to="/about">Sobre nosotros</router-link>
+        <router-link to="/contact">Contacto</router-link>
+        <router-link to="/404">Página de error</router-link>
       </div>
-      <div class="copyright">© 2025 Flix SE</div>
+      <div class="copyright">© 2025 GoCity</div>
     </div>
   </footer>
 </template>
 
 <script>
 export default {
-  name: 'FlixBusFooter',
+  name: 'GoCityFooter',
 }
 </script>
 
