@@ -45,15 +45,6 @@ const submitForm = async () => {
     return
   }
 
-  const botToken = import.meta.env.VITE_TELEGRAM_BOT_TOKEN
-  const chatId = import.meta.env.VITE_TELEGRAM_CHAT_ID
-
-  if (!botToken || !chatId) {
-    errorMessage.value = 'No se ha configurado el bot de Telegram. Contacta con el equipo técnico.'
-    console.error('Telegram configuration missing')
-    return
-  }
-
   const name = form.value.name.trim()
   const email = form.value.email.trim()
   const message = form.value.message.trim()
@@ -67,28 +58,24 @@ const submitForm = async () => {
   showSuccess.value = false
 
   try {
-    const text = `Nuevo mensaje desde el formulario de contacto:\nNombre: ${name}\nEmail: ${email}\nMensaje:\n${message}`
-
-    const response = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+    // ✅ CORRECTO: Solo envías los datos, el texto se arma en el backend
+    const response = await fetch('/api/sendMessage', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        chat_id: chatId,
-        text,
-      }),
+      body: JSON.stringify({ name, email, message }),
     })
 
-    if (!response.ok) {
-      throw new Error(`Telegram API responded with status ${response.status}`)
+    const data = await response.json()
+
+    // ✅ Manejo de errores desde el backend
+    if (!response.ok || data.error) {
+      throw new Error(data.error || 'Error en la API')
     }
 
     form.value = { name: '', email: '', message: '' }
     showSuccess.value = true
 
-    if (successTimeoutId) {
-      clearTimeout(successTimeoutId)
-    }
-
+    if (successTimeoutId) clearTimeout(successTimeoutId)
     successTimeoutId = setTimeout(() => {
       showSuccess.value = false
       successTimeoutId = null
@@ -96,7 +83,7 @@ const submitForm = async () => {
 
     startCooldown()
   } catch (error) {
-    console.error('Error enviando mensaje a Telegram', error)
+    console.error('Error enviando mensaje:', error)
     errorMessage.value = 'No hemos podido enviar tu mensaje. Inténtalo de nuevo más tarde.'
   } finally {
     isSubmitting.value = false
