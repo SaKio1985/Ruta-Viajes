@@ -1,8 +1,8 @@
-// api/sendMessage.js (ubicación exacta)
+// api/sendMessage.js (en RAÍZ del proyecto)
 export default async function handler(req, res) {
-  // Configurar CORS
+  // CORS
   res.setHeader('Access-Control-Allow-Origin', '*')
-  res.setHeader('Access-Control-Allow-Methods', 'POST')
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS')
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
 
   if (req.method === 'OPTIONS') {
@@ -16,15 +16,14 @@ export default async function handler(req, res) {
   const { name, email, message } = req.body
 
   if (!name || !email || !message) {
-    return res.status(400).json({ error: 'Faltan campos requeridos' })
+    return res.status(400).json({ error: 'Faltan campos' })
   }
 
-  // ✅ Variables de entorno SIN prefijo VITE_
   const botToken = process.env.TELEGRAM_BOT_TOKEN
   const chatId = process.env.TELEGRAM_CHAT_ID
 
   if (!botToken || !chatId) {
-    console.error('Faltan variables de entorno en Vercel')
+    console.error('❌ Faltan variables de entorno en Vercel')
     return res.status(500).json({ error: 'Configuración del servidor incompleta' })
   }
 
@@ -43,7 +42,7 @@ export default async function handler(req, res) {
 
     return res.status(200).json({ success: true })
   } catch (error) {
-    console.error('Error en /api/sendMessage:', error)
+    console.error('❌ Error en /api/sendMessage:', error)
     return res.status(500).json({ error: 'Error al enviar el mensaje' })
   }
 }
