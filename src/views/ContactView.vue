@@ -210,14 +210,14 @@ onBeforeUnmount(() => {
 }
 
 .hero-section h1 {
-  color: #ffffff;
+  color: #1a3c0c;
   font-size: 2.5rem;
   margin-bottom: 10px;
 }
 
 .subtitle {
   font-size: 1.2rem;
-  color: rgba(255, 255, 255, 0.9);
+  color: #2d4a1f;
   max-width: 600px;
   margin: 0 auto;
 }
