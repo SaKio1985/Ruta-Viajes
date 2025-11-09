@@ -1,44 +1,34 @@
-<script>
+<script setup>
 // ✅ Importamos la imagen desde src/assets
 import bannerImage from '@/assets/GoCity.jpg'
 import { useRouter } from 'vue-router'
-
-export default {
-  name: 'HeroBanner',
-  setup() {
-    // 👇 Inyectamos el router
-    const router = useRouter()
-
-    return {
-      bannerImage,
-      isButtonClicked: false,
-      handleClick() {
-        this.isButtonClicked = true
-        // 👇 Redirigimos después de un pequeño delay (para que se vea la animación)
-        setTimeout(() => {
-          router.push({ name: 'busqueda' })
-        }, 300) // 300ms = duración aproximada de la animación
-      },
-      resetAnimation() {
-        this.isButtonClicked = false
-      },
-    }
-  },
+import { ref } from 'vue' // 👈 Importamos ref de Vue 3
+// 👇 Inyectamos el router
+const router = useRouter()
+// 👇 Usamos ref() para hacer isButtonClicked reactivo en Vue 3
+const isButtonClicked = ref(false)
+// 👇 No necesitamos this, usamos directamente las variables reactivas
+const handleClick = () => {
+  isButtonClicked.value = true // Cambiamos isButtonClicked por isButtonClicked.value
+  // 👇 Redirigimos después de un pequeño delay (para que se vea la animación)
+  setTimeout(() => {
+    router.push({ name: 'busqueda' })
+  }, 300) // 300ms = duración aproximada de la animación
+}
+const resetAnimation = () => {
+  isButtonClicked.value = false // También aquí cambiamos por isButtonClicked.value
 }
 </script>
-
 <template>
   <div class="hero-banner">
     <!-- Contenedor principal con imagen de fondo -->
     <div class="hero-background" :style="{ backgroundImage: `url(${bannerImage})` }">
       <!-- Capa de oscurecimiento para mejorar contraste -->
       <div class="overlay"></div>
-
       <!-- Contenido centrado -->
       <div class="hero-content">
         <!-- Título principal -->
         <h1>Viaja barato en autobús</h1>
-
         <!-- Texto descriptivo -->
         <p>
           GoCity es tu guía inteligente para explorar más de 40 destinos en Europa y América,
@@ -47,7 +37,6 @@ export default {
           cada ciudad, precios actualizados y opciones de movilidad sostenible (autobuses, trenes y
           transporte local), todo organizado para que planifiques tu viaje ideal sin estrés.
         </p>
-
         <!-- ✅ BOTÓN "BUSCAR CIUDAD" (reemplaza "Buscar rutas") -->
         <button
           class="city-search-button"
@@ -61,7 +50,6 @@ export default {
     </div>
   </div>
 </template>
-
 <style scoped>
 .hero-banner {
   width: 100%;
@@ -69,7 +57,6 @@ export default {
   overflow: hidden;
   margin-bottom: 40px;
 }
-
 .hero-background {
   height: 650px; /* Altura generosa para contenido */
   background-size: cover;
@@ -80,7 +67,6 @@ export default {
   justify-content: center;
   align-items: center;
 }
-
 /* Capa oscura semi-transparente */
 .overlay {
   position: absolute;
@@ -91,7 +77,6 @@ export default {
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 1;
 }
-
 /* Contenido encima del overlay */
 .hero-content {
   position: relative;
@@ -101,7 +86,6 @@ export default {
   padding: 0 20px;
   max-width: 900px;
 }
-
 .hero-content h1 {
   font-size: 2.5rem;
   font-weight: bold;
@@ -109,14 +93,12 @@ export default {
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
   line-height: 1.2;
 }
-
 .hero-content p {
   font-size: 1.2rem;
   line-height: 1.6;
   margin: 0 0 40px;
   text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
 }
-
 /* ✅ ESTILO DEL BOTÓN "BUSCAR CIUDAD" */
 .city-search-button {
   background-color: var(--dark-moss-green, #2c8a0e);
@@ -133,16 +115,13 @@ export default {
   transition: background-color 0.3s ease;
   will-change: transform;
 }
-
 .city-search-button:hover {
   background-color: var(--dark-moss-green, #22700b);
 }
-
 /* ✅ ANIMACIÓN AL HACER CLIC */
 .city-search-button.clicked {
   animation: pulse 0.6s ease-in-out;
 }
-
 @keyframes pulse {
   0% {
     transform: scale(1);
@@ -155,29 +134,24 @@ export default {
     transform: scale(1);
   }
 }
-
 /* RESPONSIVO: En pantallas pequeñas, hacemos el botón más adaptable */
 @media (max-width: 768px) {
   .hero-background {
     height: 500px;
   }
-
   .hero-content h1 {
     font-size: 2rem;
   }
-
   .hero-content p {
     font-size: 1rem;
     margin-bottom: 30px;
   }
-
   .city-search-button {
     width: 90%;
     max-width: 400px;
     height: 80px;
     font-size: 24px;
   }
-
   .notification {
     flex-direction: column;
     text-align: center;

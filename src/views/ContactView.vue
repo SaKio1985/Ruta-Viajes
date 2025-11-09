@@ -1,3 +1,120 @@
+<script setup>
+import { onBeforeUnmount, ref } from 'vue'
+
+const form = ref({
+  name: '',
+  email: '',
+  message: '',
+})
+
+const showSuccess = ref(false)
+const errorMessage = ref('')
+const isSubmitting = ref(false)
+const isCooldown = ref(false)
+const cooldownRemaining = ref(0)
+
+const COOLDOWN_SECONDS = 15
+let cooldownIntervalId = null
+let successTimeoutId = null
+
+const startCooldown = () => {
+  if (cooldownIntervalId) {
+    clearInterval(cooldownIntervalId)
+  }
+
+  isCooldown.value = true
+  cooldownRemaining.value = COOLDOWN_SECONDS
+
+  cooldownIntervalId = setInterval(() => {
+    if (cooldownRemaining.value <= 1) {
+      clearInterval(cooldownIntervalId)
+      cooldownIntervalId = null
+      isCooldown.value = false
+      cooldownRemaining.value = 0
+    } else {
+      cooldownRemaining.value -= 1
+    }
+  }, 1000)
+}
+
+const submitForm = async () => {
+  errorMessage.value = ''
+
+  if (isCooldown.value) {
+    errorMessage.value = `Por favor espera ${cooldownRemaining.value} segundos antes de enviar otro mensaje.`
+    return
+  }
+
+  const botToken = import.meta.env.VITE_TELEGRAM_BOT_TOKEN
+  const chatId = import.meta.env.VITE_TELEGRAM_CHAT_ID
+
+  if (!botToken || !chatId) {
+    errorMessage.value = 'No se ha configurado el bot de Telegram. Contacta con el equipo técnico.'
+    console.error('Telegram configuration missing')
+    return
+  }
+
+  const name = form.value.name.trim()
+  const email = form.value.email.trim()
+  const message = form.value.message.trim()
+
+  if (!name || !email || !message) {
+    errorMessage.value = 'Por favor completa todos los campos antes de enviar.'
+    return
+  }
+
+  isSubmitting.value = true
+  showSuccess.value = false
+
+  try {
+    const text = `Nuevo mensaje desde el formulario de contacto:\nNombre: ${name}\nEmail: ${email}\nMensaje:\n${message}`
+
+    const response = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        chat_id: chatId,
+        text,
+      }),
+    })
+
+    if (!response.ok) {
+      throw new Error(`Telegram API responded with status ${response.status}`)
+    }
+
+    form.value = { name: '', email: '', message: '' }
+    showSuccess.value = true
+
+    if (successTimeoutId) {
+      clearTimeout(successTimeoutId)
+    }
+
+    successTimeoutId = setTimeout(() => {
+      showSuccess.value = false
+      successTimeoutId = null
+    }, 5000)
+
+    startCooldown()
+  } catch (error) {
+    console.error('Error enviando mensaje a Telegram', error)
+    errorMessage.value = 'No hemos podido enviar tu mensaje. Inténtalo de nuevo más tarde.'
+  } finally {
+    isSubmitting.value = false
+  }
+}
+
+onBeforeUnmount(() => {
+  if (cooldownIntervalId) {
+    clearInterval(cooldownIntervalId)
+  }
+
+  if (successTimeoutId) {
+    clearTimeout(successTimeoutId)
+    successTimeoutId = null
+  }
+})
+</script>
+
 <template>
   <div class="contact-view">
     <div class="hero-section">
@@ -51,7 +168,9 @@
               <textarea id="message" v-model="form.message" rows="5" required></textarea>
             </div>
 
-            <button type="submit" class="submit-btn">Enviar mensaje</button>
+            <button type="submit" class="submit-btn" :disabled="isSubmitting || isCooldown">
+              {{ isSubmitting ? 'Enviando...' : 'Enviar mensaje' }}
+            </button>
           </form>
         </div>
       </div>
@@ -59,38 +178,18 @@
       <div v-if="showSuccess" class="success-message">
         ¡Gracias por tu mensaje! Te responderemos pronto.
       </div>
+      <div v-if="errorMessage" class="error-message">
+        {{ errorMessage }}
+      </div>
+      <div v-if="isCooldown" class="cooldown-message">
+        Por favor espera {{ cooldownRemaining }} segundos antes de enviar otro mensaje.
+      </div>
       <div class="cta-section">
         <router-link to="/busqueda" class="btn-primary">Explorar ciudades</router-link>
       </div>
     </div>
   </div>
 </template>
-
-<script setup>
-import { ref } from 'vue'
-
-const form = ref({
-  name: '',
-  email: '',
-  message: '',
-})
-
-const showSuccess = ref(false)
-
-const submitForm = () => {
-  // En una app real, aquí enviarías los datos a un backend
-  console.log('Formulario enviado:', form.value)
-
-  // Limpiar formulario
-  form.value = { name: '', email: '', message: '' }
-  showSuccess.value = true
-
-  // Ocultar mensaje después de 5 segundos
-  setTimeout(() => {
-    showSuccess.value = false
-  }, 5000)
-}
-</script>
 
 <style scoped>
 .contact-view {
@@ -192,9 +291,32 @@ textarea {
   filter: brightness(0.95);
 }
 
+.submit-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 .success-message {
   background: #d4edda;
   color: #155724;
+  padding: 15px;
+  border-radius: 6px;
+  margin-top: 20px;
+  text-align: center;
+}
+
+.error-message {
+  background: #f8d7da;
+  color: #721c24;
+  padding: 15px;
+  border-radius: 6px;
+  margin-top: 20px;
+  text-align: center;
+}
+
+.cooldown-message {
+  background: #fff3cd;
+  color: #856404;
   padding: 15px;
   border-radius: 6px;
   margin-top: 20px;

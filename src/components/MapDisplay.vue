@@ -1,18 +1,3 @@
-<template>
-  <div style="height: 400px; width: 100%">
-    <l-map ref="map" :zoom="zoom" :center="center" style="height: 100%; width: 100%">
-      <l-tile-layer
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        layer-type="base"
-        name="OpenStreetMap"
-      ></l-tile-layer>
-
-      <!-- Marcador en la ubicación seleccionada -->
-      <l-marker v-if="latitude && longitude" :lat-lng="[latitude, longitude]"></l-marker>
-    </l-map>
-  </div>
-</template>
-
 <script setup>
 import { ref, onMounted, watch } from 'vue'
 import { LMap, LTileLayer, LMarker } from '@vue-leaflet/vue-leaflet'
@@ -59,6 +44,21 @@ onMounted(() => {
   // Opcional: acceder al mapa real si necesitas funcionalidades avanzadas
 })
 </script>
+
+<template>
+  <div style="height: 400px; width: 100%">
+    <l-map ref="map" :zoom="zoom" :center="center" style="height: 100%; width: 100%">
+      <l-tile-layer
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        layer-type="base"
+        name="OpenStreetMap"
+      ></l-tile-layer>
+
+      <!-- Marcador en la ubicación seleccionada -->
+      <l-marker v-if="latitude && longitude" :lat-lng="[latitude, longitude]"></l-marker>
+    </l-map>
+  </div>
+</template>
 
 <style scoped>
 .leaflet-container {

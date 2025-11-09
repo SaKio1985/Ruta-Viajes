@@ -1,3 +1,7 @@
+<script setup>
+defineOptions({ name: 'GoCityFooter' })
+</script>
+
 <template>
   <footer class="minimal-footer">
     <div class="footer-content">
@@ -6,16 +10,10 @@
         <router-link to="/contact">Contacto</router-link>
         <router-link to="/404">Página de error</router-link>
       </div>
-      <div class="copyright">© 2025 GoCity</div>
+      <div class="copyright">2025 GoCity</div>
     </div>
   </footer>
 </template>
-
-<script>
-export default {
-  name: 'GoCityFooter',
-}
-</script>
 
 <style scoped>
 .minimal-footer {
